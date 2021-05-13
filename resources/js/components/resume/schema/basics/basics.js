@@ -1,5 +1,16 @@
+const padding = ['p-0', 'pr-md-1'];
+const colMd4 = ['col-md-4', ...padding];
+const colMd6 = ['col-md-6', ...padding];
+
 export default{
      fields:[
+         //picture fields
+         {
+            type: 'resume-image',
+            label: 'Resume Profile Image',
+            model: 'picture',
+
+         },
          //name
          {
              type: 'input',
@@ -7,7 +18,7 @@ export default{
              placeholder: 'Your name',
              label: 'Name',
              model: 'name',
-             styleClasses:['col-md-4', 'p-0', 'pr-md-1'],
+             styleClasses:colMd4
          },
          //label
          {
@@ -16,7 +27,7 @@ export default{
              placeholder: 'Programmer',
              label: 'Label',
              model: 'label',
-             styleClasses:['col-md-4','p-0', 'pr-md-1'],
+             styleClasses:colMd4
 
          },
          //email
@@ -27,7 +38,7 @@ export default{
              label: 'Email',
              model: 'email',
              validator: 'email',
-             styleClasses:['col-md-4', 'p-0', 'pr-md-1'],
+             styleClasses:colMd4
          },
          //Phone
          {
@@ -36,7 +47,7 @@ export default{
              placeholder: '94515455',
              label: 'Phone',
              model: 'phone',
-             styleClasses:['col-md-6', 'p-0', 'pr-md-1'],
+             styleClasses:colMd6
          },
          //Website
          {
@@ -46,7 +57,7 @@ export default{
              label: 'Website',
              model: 'website',
              validator: 'url',
-             styleClasses:['col-md-6', 'p-0', 'pr-md-1'],
+             styleClasses:colMd6
          },
 
          //Summary

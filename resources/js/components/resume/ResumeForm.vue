@@ -2,22 +2,28 @@
   <div>
     <Tabs>
       <Tab title="Basic" icon="fas fa-user">
-        <h1>Test Primero</h1>
-      </Tab>
 
-      <VueFormGenerator
-        :schema="schemas.basics"
-        :model="resume.content.basics"
-        :options="options"
-      />
+        <VueFormGenerator
+            :schema="schemas.basics"
+            :model="resume.content.basics"
+            :options="options"
+        />
+        <VueFormGenerator
+            :schema="schemas.location"
+            :model="resume.content.basics.location"
+            :options="options"
+        />
+      </Tab>
     </Tabs>
   </div>
 </template>
 
 <script>
+import FieldResumeImage from './vfg/FieldResumeImage';
 import Tabs from './tabs/Tabs';
 import Tab from './tabs/Tab';
 import basics from './schema/basics/basics';
+import location from './schema/basics/location';
 import { component as VueFormGenerator } from 'vue-form-generator'
 import 'vue-form-generator/dist/vfg.css'
 export default {
@@ -26,17 +32,22 @@ export default {
       VueFormGenerator,
       Tabs,
       Tab,
+      FieldResumeImage,
+
   },
   data(){
       return {
           resume:{
             title: '',
             content: {
-                basics: {}
+                basics: {
+                    location: {}
+                    },
                 },
             },
             schemas:{
                 basics,
+                location,
             },
             options:{
                 validateAfterLoad: true,

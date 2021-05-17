@@ -26,6 +26,7 @@ export default {
       placeholder: 'https://company.com',
       label: 'Website',
       model: 'website',
+      validator: 'url',
       styleClasses: ['col-md-4', 'p-0', 'pr-md-1'],
     },
      // Start Date

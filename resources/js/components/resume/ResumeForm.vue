@@ -21,14 +21,40 @@
           :schema="schemas.profiles"
         />
       </Tab>
-     <Tab icon="fa fa-briefcase" title="Work">
+      <Tab icon="fa fa-briefcase" title="Work">
         <DynamicForm
           title="Work"
           self="work"
           :model="resume.content"
           :schema="schemas.work"
           :subforms="subforms.work"
-          />
+        />
+      </Tab>
+      <Tab icon="fa fa-graduation-cap" title="Education">
+        <DynamicForm
+          title="Education"
+          self="education"
+          :model="resume.content"
+          :schema="schemas.education"
+          :subforms="subforms.education"
+        />
+      </Tab>
+      <Tab icon="fa fa-lightbulb" title="Skills">
+        <DynamicForm
+          title="Skill"
+          self="skills"
+          :model="resume.content"
+          :schema="schemas.skills"
+          :subforms="subforms.skills"
+        />
+      </Tab>
+      <Tab icon="fa fa-trophy" title="Awards">
+        <DynamicForm
+          title="Awards"
+          self="awards"
+          :model="resume.content"
+          :schema="schemas.awards"
+        />
       </Tab>
     </Tabs>
   </div>
@@ -42,6 +68,9 @@ import basics from './schema/basics/basics';
 import location from './schema/basics/location';
 import profiles from './schema/basics/profiles';
 import work from './schema/work';
+import education from './schema/education';
+import awards from './schema/awards';
+import skills from './schema/skills';
 import DynamicForm from './dynamic/DynamicForm';
 import ListForm from './dynamic/ListForm';
 import { component as VueFormGenerator } from 'vue-form-generator';
@@ -72,17 +101,40 @@ export default {
         location,
         profiles,
         work,
+        education,
+        skills,
+        awards,
       },
       subforms: {
         work: [
           {
             component: ListForm,
-              props: {
+            props: {
               title: 'Highlights',
               self: 'highlights',
-              placeholder: "started company",
+              placeholder: 'started company',
             },
           },
+        ],
+        education: [
+          {
+            component: ListForm,
+            props: {
+              title: 'Courses',
+              self: 'courses',
+              placeholder: 'Db1101 Basic Sql',
+            },
+          },
+        ],
+        skills: [
+            {
+                component: ListForm,
+                props: {
+                title: 'Keywords',
+                self: 'keywords',
+                placeholder: 'Java',
+                },
+            },
         ],
       },
       options: {

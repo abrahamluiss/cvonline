@@ -21,6 +21,15 @@
           :schema="schemas.profiles"
         />
       </Tab>
+     <Tab icon="fa fa-briefcase" title="Work">
+        <DynamicForm
+          title="Work"
+          self="work"
+          :model="resume.content"
+          :schema="schemas.work"
+          :subforms="subforms.work"
+          />
+      </Tab>
     </Tabs>
   </div>
 </template>
@@ -32,7 +41,9 @@ import Tab from './tabs/Tab';
 import basics from './schema/basics/basics';
 import location from './schema/basics/location';
 import profiles from './schema/basics/profiles';
+import work from './schema/work';
 import DynamicForm from './dynamic/DynamicForm';
+import ListForm from './dynamic/ListForm';
 import { component as VueFormGenerator } from 'vue-form-generator';
 import 'vue-form-generator/dist/vfg.css';
 
@@ -44,7 +55,7 @@ export default {
     Tab,
     FieldResumeImage,
     DynamicForm,
-
+    ListForm,
   },
   data() {
     return {
@@ -53,15 +64,26 @@ export default {
         content: {
           basics: {
             location: {},
-
           },
-
         },
       },
       schemas: {
         basics,
         location,
         profiles,
+        work,
+      },
+      subforms: {
+        work: [
+          {
+            component: ListForm,
+              props: {
+              title: 'Highlights',
+              self: 'highlights',
+              placeholder: "started company",
+            },
+          },
+        ],
       },
       options: {
         validateAfterLoad: true,

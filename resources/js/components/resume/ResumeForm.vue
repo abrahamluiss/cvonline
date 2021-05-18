@@ -61,9 +61,7 @@
 </template>
 
 <script>
-import FieldResumeImage from './vfg/FieldResumeImage';
-import Tabs from './tabs/Tabs';
-import Tab from './tabs/Tab';
+import jsonresume from './jsonresume';
 import basics from './schema/basics/basics';
 import location from './schema/basics/location';
 import profiles from './schema/basics/profiles';
@@ -71,9 +69,12 @@ import work from './schema/work';
 import education from './schema/education';
 import awards from './schema/awards';
 import skills from './schema/skills';
+import FieldResumeImage from './vfg/FieldResumeImage';
+import Tabs from './tabs/Tabs';
+import Tab from './tabs/Tab';
+import { component as VueFormGenerator } from 'vue-form-generator';
 import DynamicForm from './dynamic/DynamicForm';
 import ListForm from './dynamic/ListForm';
-import { component as VueFormGenerator } from 'vue-form-generator';
 import 'vue-form-generator/dist/vfg.css';
 
 export default {
@@ -86,16 +87,22 @@ export default {
     DynamicForm,
     ListForm,
   },
+
+  props: {
+    update: false,
+    resume: {
+      type: Object,
+      default: () => ({
+        id: null,
+        title: 'Resume TITLE',
+        content: jsonresume,
+      }),
+    },
+  },
+
   data() {
     return {
-      resume: {
-        title: '',
-        content: {
-          basics: {
-            location: {},
-          },
-        },
-      },
+
       schemas: {
         basics,
         location,
@@ -127,14 +134,14 @@ export default {
           },
         ],
         skills: [
-            {
-                component: ListForm,
-                props: {
-                title: 'Keywords',
-                self: 'keywords',
-                placeholder: 'Java',
-                },
+          {
+            component: ListForm,
+            props: {
+              title: 'Keywords',
+              self: 'keywords',
+              placeholder: 'Java',
             },
+          },
         ],
       },
       options: {

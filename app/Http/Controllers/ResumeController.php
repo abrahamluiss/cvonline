@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Resume;
 use Illuminate\Http\Request;
 
 class ResumeController extends Controller
@@ -12,7 +13,8 @@ class ResumeController extends Controller
     }
     public function create()
     {
-        return view('resumes.create');
+        $resume = json_encode(Resume::factory()->make());
+        return view('resumes.create', compact('resume'));
     }
     public function store(Request $request)
     {

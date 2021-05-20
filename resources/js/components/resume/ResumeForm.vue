@@ -1,10 +1,13 @@
 <template>
   <div>
-      <Alert
-      v-if="Array.isArray(alert.messages) && alert.messages.length> 0 || typeof alert.messages === 'string'"
+    <Alert
+      v-if="
+        (Array.isArray(alert.messages) && alert.messages.length > 0) ||
+          typeof alert.messages === 'string'
+      "
       :messages="alert.messages"
       :type="alert.type"
-      />
+    />
 
     <div class="row mb-3">
       <div class="col-sm-8">
@@ -117,7 +120,7 @@ export default {
       }),
     },
   },
-    components: {
+  components: {
     VueFormGenerator,
     Tabs,
     Tab,
@@ -129,10 +132,10 @@ export default {
 
   data() {
     return {
-        alert: {
-            type: '',
-            messages: [],
-        },
+      alert: {
+        type: '',
+        messages: [],
+      },
       schemas: {
         basics,
         location,
@@ -181,16 +184,19 @@ export default {
       },
     };
   },
-  methods:{
-      async submit(){
-          try{
-              const res = await axios.post('http://localhost:8000/resumes', this.resume);
-              console.log(res.data);
-              window.location = '/home';
-          } catch (e){
-              this.alert.messages = ['ha habido un error', 'error aqui'];
-          }
+  methods: {
+    async submit() {
+      try {
+        const res = this.update
+          ? await axios.put(route('resumes.update', this.resume.id), this.resume)
+          : await axios.post(route('resumes.store'), this.resume);
+
+        console.log(res);
+        //window.location = '/home';
+      } catch (e) {
+        this.alert.messages = ['ha habido un error', 'error aqui'];
       }
-  }
+    },
+  },
 };
 </script>

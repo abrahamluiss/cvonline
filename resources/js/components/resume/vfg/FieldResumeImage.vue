@@ -17,7 +17,7 @@ export default {
     data(){
         return{
             reader: new FileReader(),
-            image: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+            image: this.model[this.schema.model],
         }
     },
     created(){

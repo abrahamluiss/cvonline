@@ -1969,6 +1969,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2068,27 +2071,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                _context.next = 3;
-                return axios.post('http://localhost:8000/resumes', _this.resume);
 
-              case 3:
-                res = _context.sent;
-                console.log(res.data);
-                window.location = '/home';
-                _context.next = 11;
+                if (!_this.update) {
+                  _context.next = 7;
+                  break;
+                }
+
+                _context.next = 4;
+                return axios.put(route('resumes.update', _this.resume.id), _this.resume);
+
+              case 4:
+                _context.t0 = _context.sent;
+                _context.next = 10;
                 break;
 
-              case 8:
-                _context.prev = 8;
-                _context.t0 = _context["catch"](0);
+              case 7:
+                _context.next = 9;
+                return axios.post(route('resumes.store'), _this.resume);
+
+              case 9:
+                _context.t0 = _context.sent;
+
+              case 10:
+                res = _context.t0;
+                console.log(res); //window.location = '/home';
+
+                _context.next = 17;
+                break;
+
+              case 14:
+                _context.prev = 14;
+                _context.t1 = _context["catch"](0);
                 _this.alert.messages = ['ha habido un error', 'error aqui'];
 
-              case 11:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 8]]);
+        }, _callee, null, [[0, 14]]);
       }))();
     }
   }
@@ -2348,7 +2369,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      tab: 1
+      tab: 0
     };
   }
 });
@@ -2386,7 +2407,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       reader: new FileReader(),
-      image: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg'
+      image: this.model[this.schema.model]
     };
   },
   created: function created() {

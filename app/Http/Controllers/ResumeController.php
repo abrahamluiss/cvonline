@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreResume;
 use App\Models\Resume;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class ResumeController extends Controller
 {
@@ -17,9 +20,25 @@ class ResumeController extends Controller
         $resume = json_encode(Resume::factory()->make());
         return view('resumes.create', compact('resume'));
     }
+    private function savaPicture($blob){
+        $img = Image::make($blob);
+        $fileName = Str::uuid() . '.' . explode('/', $img->mime())[1];
+        $filePatch = "storage/pictures/$fileName";
+        $img->save(public_path($filePatch));
+        return $filePatch;
+    }
     public function store(StoreResume $request)
     {
         $data = $request->validated();
-        return response()->json($data);
+        //return response()->json($data);
+        $picture = $data['content']['basics']['picture'];
+        //return response($picture);
+        if($picture !== '/storage/pictures/default.png'){
+            //$patch = $picture->store('pictures','public');
+            $uri =  $this->savaPicture($picture);
+            $data['content']['basics']['picture'] = $uri;
+        }
+        $resume = auth()->user()->resumes()->create($data);
+        return response($resume, Response::HTTP_CREATED);
     }
 }

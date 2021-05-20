@@ -130,7 +130,7 @@ export default {
   data() {
     return {
         alert: {
-            type: 'warning',
+            type: '',
             messages: [],
         },
       schemas: {
@@ -186,6 +186,7 @@ export default {
           try{
               const res = await axios.post('http://localhost:8000/resumes', this.resume);
               console.log(res.data);
+              window.location = '/home';
           } catch (e){
               this.alert.messages = ['ha habido un error', 'error aqui'];
           }

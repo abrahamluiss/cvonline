@@ -2012,7 +2012,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       alert: {
-        type: 'warning',
+        type: '',
         messages: []
       },
       schemas: {
@@ -2074,20 +2074,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 res = _context.sent;
                 console.log(res.data);
-                _context.next = 10;
+                window.location = '/home';
+                _context.next = 11;
                 break;
 
-              case 7:
-                _context.prev = 7;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
                 _this.alert.messages = ['ha habido un error', 'error aqui'];
 
-              case 10:
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7]]);
+        }, _callee, null, [[0, 8]]);
       }))();
     }
   }
@@ -2628,7 +2629,7 @@ __webpack_require__.r(__webpack_exports__);
   basics: {
     name: '',
     label: '',
-    picture: "/storage/pictures/default.png",
+    picture: '/storage/pictures/default.png',
     email: '',
     phone: '',
     website: '',
@@ -12360,7 +12361,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nimg[data-v-758d89f3] {\r\n    width:100px;\r\n    height:100px;\r\n    border-radius: 50%;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nimg[data-v-758d89f3] {\n    width:100px;\n    height:100px;\n    border-radius: 50%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

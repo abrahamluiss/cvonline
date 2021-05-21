@@ -194,7 +194,21 @@ export default {
         console.log(res);
         //window.location = '/home';
       } catch (e) {
-        this.alert.messages = ['ha habido un error', 'error aqui'];
+        //this.alert.messages = ['ha habido un error', 'error aqui'];
+        const errors = e.response.data.errors;
+        for (const [prop, value] of Object.entries(errors)){
+          let origin = prop.split('.');
+          if(origin[0] === 'content'){
+            origin.splice(0,1);
+          }
+          origin = origin.join(' > ')
+          for (const error of value) {
+            const message = error.replace(prop, `<strong>${origin}</strong>`);
+            alert.messages.push(message);
+          }
+        }
+        this.alert.type = 'danger';
+
       }
     },
   },

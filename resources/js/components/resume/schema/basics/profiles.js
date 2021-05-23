@@ -17,6 +17,7 @@ export default{
             placeholder: 'https://Twitter.com/user',
             label: 'Url',
             model: 'url',
+            validator: 'url',
             styleClasses:['col-md-4', 'p-0', 'pr-md-1'],
 
         },

@@ -18,7 +18,7 @@ class PublishController extends Controller
     ];
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'show']);
         $this->jsonResumeApi = config('services.jsonresume.api');
     }
     /**
@@ -58,6 +58,9 @@ class PublishController extends Controller
     public function create()
     {
         $resumes = auth()->user()->resumes;
+        if (count($resumes)<1) {
+            return redirect()->route('resumes.create');
+        }
         $themes = Theme::all();
 
 
@@ -96,7 +99,15 @@ class PublishController extends Controller
      */
     public function show(Publish $publish)
     {
-        //
+        if ($publish->visibility === 'private') {
+            if (!auth()->check()) {
+                return redirect()->route('login');
+            }
+            if (auth()->user()->id !== $publish->user->id) {
+                abort(Response::HTTP_FORBIDDEN);
+            }
+        }
+        return $this->render($publish->resume, $publish->theme);
     }
 
     /**
@@ -147,6 +158,11 @@ class PublishController extends Controller
      */
     public function destroy(Publish $publish)
     {
-        //
+        $this->authorize('delete', $publish);
+        $publish->delete();
+        return redirect()->route('publishes.index')->with('alert', [
+            'type' => 'danger',
+            'messages' => ["Publish $publish->url deleted"],
+        ]);
     }
 }

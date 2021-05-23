@@ -16,6 +16,12 @@ class CreatePublishesTable extends Migration
         Schema::create('publishes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('user_id');
+            $table->foreignId('resume_id');
+            $table->foreignId('theme_id');
+            $table->enum('visibility', ['public', 'private', 'hidden'])->default('public');
+            $table->string('url');
+            
         });
     }
 

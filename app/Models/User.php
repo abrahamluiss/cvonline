@@ -40,8 +40,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function resumes()
-    {
-        return $this->hasmany(Resume::class);
+    public function resumes() {
+        return $this->hasMany(Resume::class);
+    }
+
+    public function publishes() {
+        return $this->hasMany(Publish::class);
     }
 }

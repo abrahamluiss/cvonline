@@ -185,30 +185,81 @@ export default {
     };
   },
   methods: {
+    validate(target, parent = 'resume') {
+      let errors = [];
+      for (const [prop, value] of Object.entries(target)) {
+        if (Array.isArray(value)) {
+          if (value.length === 0) {
+            errors.push(`${parent} > ${prop} must have at leat one element`);
+            continue;
+          }
+          for (const i in value) {
+            if (typeof value[i] === null || value[i] === '') {
+              errors.push(`${parent} > ${prop} > ${i} cannon be empty`);
+            } else if (typeof value[i] === 'object') {
+              errors = errors.concat(
+                this.validate(value, `${parent} > ${prop} > ${i}`)
+              );
+            } else if (value === null || value === '') {
+              errors.push(`${parent} > ${prop} is require`);
+            }
+          }
+        } else if (typeof value === 'object') {
+          errors = errors.concat(this.validate(value, `${parent} > ${prop}`));
+        } else if (value === null || value === '') {
+          errors.push(`${parent}>${prop} is require`);
+        }
+      }
+      return errors;
+    },
+    isValid() {
+      const { alert } = this.$data;
+      const { resume } = this.$props;
+      alert.messages = [];
+      const errors = this.validate(this.resume.content);
+      console.log(errors);
+      if (errors.length < 1) {
+        return true;
+      }
+      alert.messages = errors.slice(0, 3);
+      if (errors.length > 3) {
+        alert.messages.push(
+          `<strong>${errors.length - 3} more errors...</strong>`
+        );
+      }
+      alert.type = 'warning';
+      //this.alert.messages = errors;
+      return false;
+    },
     async submit() {
+      if (!this.isValid()) {
+        return;
+      }
+      const { alert } = this.$data;
+      const { resume, update } = this.$props;
+
       try {
         const res = this.update
-          ? await axios.put(route('resumes.update', this.resume.id), this.resume)
-          : await axios.post(route('resumes.store'), this.resume);
+          ? await axios.put(route('resumes.update', resume.id), resume)
+          : await axios.post(route('resumes.store'), resume);
 
-        console.log(res);
-        //window.location = '/home';
+        //console.log(res);
+        window.location = route('resumes.index');
       } catch (e) {
-        //this.alert.messages = ['ha habido un error', 'error aqui'];
+        alert.messages = [];
         const errors = e.response.data.errors;
-        for (const [prop, value] of Object.entries(errors)){
+        for (const [prop, value] of Object.entries(errors)) {
           let origin = prop.split('.');
-          if(origin[0] === 'content'){
-            origin.splice(0,1);
+          if (origin[0] === 'content') {
+            origin.splice(0, 1);
           }
-          origin = origin.join(' > ')
+          origin = origin.join(' > ');
           for (const error of value) {
             const message = error.replace(prop, `<strong>${origin}</strong>`);
             alert.messages.push(message);
           }
         }
-        this.alert.type = 'danger';
-
+        alert.type = 'danger';
       }
     },
   },

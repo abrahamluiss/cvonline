@@ -49,7 +49,7 @@ export default {
           'info',
           'light',
           'dark',
-        ].indexOf(value) <= 0,
+        ].indexOf(value) !== -1,
     },
   },
 };

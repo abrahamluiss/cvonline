@@ -2,7 +2,7 @@ export default {
   basics: {
     name: '',
     label: '',
-    picture: '/storage/pictures/default.png',
+    picture: '/storage/pictures/default.jpg',
     email: '',
     phone: '',
     website: '',

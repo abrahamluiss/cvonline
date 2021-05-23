@@ -3,10 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publish;
+use App\Models\Theme;
+use App\Models\Resume;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
 
 class PublishController extends Controller
 {
+    private $rules = [
+        'resume_id' => 'required|numeric',
+        'theme_id' => 'required|numeric',
+        'visibility' => 'nullable|string|in:public,private,hidden',
+    ];
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->jsonResumeApi = config('services.jsonresume.api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +30,24 @@ class PublishController extends Controller
     {
         //
     }
+    public function preview(Request $request)
+    {
+        $data = $request->validate($this->rules);
+        $theme = Theme::findOrFail($data['theme_id']);
+        $resume = Resume::findOrFail($data['resume_id']);
+
+        if (auth()->user()->id !== $resume->user->id) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+        return $this->render($resume, $theme);
+    }
+    private function render(Resume $resume, Theme $theme)
+    {
+        $response = Http::post("$this->jsonResumeApi/theme/$theme->theme", [
+            'resume' => $resume->content,
+        ]);
+        return response($response, $response->status());
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -24,7 +56,10 @@ class PublishController extends Controller
      */
     public function create()
     {
-        //
+        $resumes = auth()->user()->resumes;
+        $themes = Theme::all();
+
+        return view('publishes.edit', compact('resumes', 'themes'));
     }
 
     /**
@@ -35,7 +70,7 @@ class PublishController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

@@ -46,7 +46,12 @@
               View Resumes
               </a>
             </li>
-
+            <li class="ml-md-2">
+                <a href="{{ route('publishes.create') }}">
+                <i class="fa fa-globe"></i>
+                    New Publish
+                </a>
+              </li>
           </ul>
 
           <!-- Right Side Of Navbar -->

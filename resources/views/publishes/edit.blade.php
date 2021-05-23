@@ -4,14 +4,26 @@
     <div class="container">
         <div class="border rounded">
             <div class="container my-3">
+                        @if (isset($publish))
+                <form method="POST" action="{{ route('publishes.update', $publish->id) }}">
+                @method('PUT')
+
+                        @else
                 <form method="POST" action="{{ route('publishes.store') }}">
-                    @csrf
+
+                        @endif
+                        @csrf
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label>RESUME</label>
                             <select id="resume" name="resume_id" class="form-control">
                             @foreach ($resumes as$resume )
+                                @if (isset($publish) && $publish->resume->id === $resume->id)
+                                <option selected value="{{ $resume->id}}">{{ $resume->title }}</option>
+                                @else
                                 <option value="{{ $resume->id}}">{{ $resume->title }}</option>
+
+                                @endif
                             @endforeach
 
                             </select>
@@ -19,17 +31,29 @@
                         <div class="form-group col-md-4">
                             <label>THME</label>
                             <select id="theme" name="theme_id" class="form-control">
+
                                 @foreach ($themes as $theme )
-                                    <option value="{{ $theme->id}}">{{ $theme->theme }}</option>
-                                @endforeach
+                                @if (isset($publish) && $publish->theme->id === $theme->id)
+                                <option selected value="{{ $theme->id}}">{{ $theme->theme }}</option>
+                                @else
+                                <option value="{{ $theme->id}}">{{ $theme->theme }}</option>
+
+                                @endif
+                            @endforeach
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label>visibility</label>
                             <select name="visibility" class="form-control">
+
                                 @foreach (['public', 'private', 'hidden'] as $visibility)
+                                @if (isset($publish) && $publish->visibility === $visibility)
+                                <option selected value="{{ $visibility }}">{{ $visibility }}</option>
+                                @else
                                 <option value="{{ $visibility }}">{{ $visibility }}</option>
-                                @endforeach
+
+                                @endif
+                            @endforeach
                             </select>
 
                         </div>

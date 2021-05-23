@@ -52,6 +52,12 @@
                     New Publish
                 </a>
               </li>
+            <li class="ml-md-2">
+                <a href="{{ route('publishes.index') }}">
+                <i class="fa fa-list-alt"></i>
+                    View Publish
+                </a>
+              </li>
           </ul>
 
           <!-- Right Side Of Navbar -->

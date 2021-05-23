@@ -28,7 +28,8 @@ class PublishController extends Controller
      */
     public function index()
     {
-        //
+        $publishes = auth()->user()->publishes;
+        return view('publishes.index', compact('publishes'));
     }
     public function preview(Request $request)
     {
@@ -59,6 +60,7 @@ class PublishController extends Controller
         $resumes = auth()->user()->resumes;
         $themes = Theme::all();
 
+
         return view('publishes.edit', compact('resumes', 'themes'));
     }
 
@@ -70,7 +72,20 @@ class PublishController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $data = $request->validate($this->rules);
+        $publish = auth()->user()->publishes()->create(array_merge($data, [ 'url' => 'tmp']));//change
+        $url = route('publishes.show', $publish->id);
+        $publish->update(compact('url'));
+
+        $resume = Resume::where('id', $data['resume_id'])->first();
+        $theme = $publish->theme()->get()->first();
+
+        return redirect()->route('publishes.index')->with('alert', [
+            'type' => 'success',
+            'messages' => [
+                "Resume $resume->title published with theme $theme->theme at <a href='$url'>$url</a>"
+            ]
+        ]);
     }
 
     /**
@@ -92,7 +107,17 @@ class PublishController extends Controller
      */
     public function edit(Publish $publish)
     {
-        //
+        $this->authorize('update', $publish);
+        $resumes = auth()->user()->resumes;
+        $themes = Theme::all();
+
+
+        return view('publishes.edit', compact(
+            'publish',
+            'resumes',
+            'themes',
+
+        ));
     }
 
     /**
@@ -104,7 +129,14 @@ class PublishController extends Controller
      */
     public function update(Request $request, Publish $publish)
     {
-        //
+        $this->authorize('update', $publish);
+        $data = $request->validate($this->rules);
+        $publish->update($data);
+
+        return redirect()->route('publishes.index')->with('alert', [
+            'type' => 'info',
+            'messages' => ["Publish $publish->url updated"],
+        ]);
     }
 
     /**

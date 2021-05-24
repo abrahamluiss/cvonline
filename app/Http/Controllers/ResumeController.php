@@ -8,6 +8,7 @@ use App\Models\Resume;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
@@ -87,7 +88,9 @@ class ResumeController extends Controller
         try {
             $resume->delete();
         } catch (QueryException $e) {
+
             $publish = Publish::where('resume_id', $resume->id)->first();
+            Log::alert("User $resume->user tied to delete a resume $resume->id used in publish $publish->id");
             return redirect()->route('resumes.index')->with('alert', [
                 'type' => 'danger',
                 'messages' => [ "
